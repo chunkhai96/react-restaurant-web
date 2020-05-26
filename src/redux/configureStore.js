@@ -16,7 +16,7 @@ export const ConfigureStore = () => {
             dishes: Dishes,
             comments: Comments,
             promotions: Promotions,
-            leader: Leaders,
+            leaders: Leaders,
             ...createForms({
                 feedback: InitialFeedback
             })
