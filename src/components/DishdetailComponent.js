@@ -4,9 +4,10 @@ import {Card, CardImg, CardText, CardBody, CardTitle,Breadcrumb,
     Modal, ModalHeader, ModalBody} from 'reactstrap';
 import {Link} from 'react-router-dom';
 import {Control, LocalForm, Errors} from 'react-redux-form';
-import { Comments } from '../redux/comments';
 
-import {Loading} from './LoadingComponent'
+import {Loading} from './LoadingComponent';
+import {baseUrl} from '../shared/baseUrl';
+import { Comments } from '../redux/comments';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -17,7 +18,7 @@ function RenderDish({dish}) {
         return(
             <div className='col-xs-12 col-sm-12 col-md-5 m-1'>
                 <Card>
-                    <CardImg top src={dish.image} alt={dish.name} />
+                    <CardImg top src= {baseUrl + dish.image} alt={dish.name} />
                     <CardBody>
                     <CardTitle>{dish.name}</CardTitle>  
                     <CardText>{dish.description}</CardText>
@@ -33,7 +34,7 @@ function RenderDish({dish}) {
     }
 }
 
-function RenderComment({comments, addComment, dishId}) {
+function RenderComment({comments, postComment, dishId}) {
     if (comments != null) {
         return(
             <div className='col-xs-12 col-sm-12 col-md-5 m-1'>
@@ -55,7 +56,7 @@ function RenderComment({comments, addComment, dishId}) {
                         );
                     })}
                 </ul>
-                <CommentForm dishId={dishId} addComment={addComment}/>
+                <CommentForm dishId={dishId} postComment={postComment}/>
             </div>
         );
     }
@@ -85,8 +86,7 @@ class CommentForm extends Component {
     }
 
     handleSubmit(values) {
-        alert("Current state is: " +JSON.stringify(values));
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
         this.toggleModal();
     }
 
@@ -179,7 +179,7 @@ function DishDetail(props) {
                 <div className='row'>
                     <RenderDish dish={props.dish}/>
                     <RenderComment comments={props.comments}
-                        addComment={props.addComment}
+                        postComment={props.postComment}
                         dishId={props.dish.id}/>    
                 </div>
             </div>
